@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebRTC Chat</title>
+  </head>
+  <body>
+    <textarea id="log" cols="40" rows="15" readonly></textarea><br />
+    <input id="message" type="text" placeholder="Digite uma mensagem" />
+    <button onclick="sendMessage()">Enviar</button>
+    <button onclick="promptPaste()">Colar Resposta</button>
+
+    <script>
+      const log = (msg) => {
+        const logBox = document.getElementById("log");
+        logBox.value += msg + "\n";
+      };
+
+      const pc = new RTCPeerConnection();
+      let dataChannel;
+
+      const isCaller = window.location.hash === "#caller";
+
+      if (isCaller) {
+        dataChannel = pc.createDataChannel("chat");
+        dataChannel.onopen = () => log("✅ Canal de dados aberto (PC)");
+        dataChannel.onmessage = (e) => log("📥 Recebido: " + e.data);
+
+        pc.createOffer().then((offer) => pc.setLocalDescription(offer));
+
+        pc.onicecandidate = (event) => {
+          if (event.candidate === null) {
+            log("📤 Oferta SDP:\n" + JSON.stringify(pc.localDescription));
+          }
+        };
+      } else {
+        pc.ondatachannel = (event) => {
+          dataChannel = event.channel;
+          dataChannel.onopen = () => log("✅ Canal de dados aberto (Celular)");
+          dataChannel.onmessage = (e) => log("📥 Recebido: " + e.data);
+        };
+
+        pc.onicecandidate = (event) => {
+          if (event.candidate === null) {
+            log("📤 Resposta SDP:\n" + JSON.stringify(pc.localDescription));
+          }
+        };
+      }
+
+      async function pasteAnswer(text) {
+        const remoteDesc = new RTCSessionDescription(JSON.parse(text));
+        await pc.setRemoteDescription(remoteDesc);
+        if (!isCaller) {
+          const answer = await pc.createAnswer();
+          await pc.setLocalDescription(answer);
+        }
+      }
+
+      function promptPaste() {
+        const resposta = prompt("Cole aqui a SDP do outro dispositivo:");
+        if (resposta) pasteAnswer(resposta);
+      }
+
+      function sendMessage() {
+        const message = document.getElementById("message").value;
+        if (dataChannel && dataChannel.readyState === "open") {
+          dataChannel.send(message);
+          log("📤 Enviado: " + message);
+        } else {
+          log("❌ Canal de dados ainda não está aberto.");
+        }
+      }
+    </script>
+  </body>
+</html>
