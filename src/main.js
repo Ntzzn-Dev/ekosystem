@@ -93,6 +93,9 @@ document.getElementById("join-btn").onclick = async () => {
 };
 
 dataChannel.onopen = () => {
+  console.log(
+    "Conexão P2P estabelecida com sucesso. Canal de dados está aberto."
+  );
   document.getElementById("chat").style.display = "block";
 };
 
@@ -105,13 +108,6 @@ document.getElementById("send-btn").onclick = () => {
   } else {
     console.log("Canal não está aberto ainda. Tente novamente mais tarde.");
   }
-};
-
-document.getElementById("send-btn").onclick = () => {
-  const message = messageInput.value;
-  dataChannel.send(message);
-  appendMessage("Você: " + message);
-  messageInput.value = "";
 };
 
 fileInput.onchange = () => {
