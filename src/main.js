@@ -108,7 +108,7 @@ function setupDataChannel(channel) {
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "arquivo_recebido";
+      link.download = "arquivo_recebido.pptx";
       link.click();
     }
   };
