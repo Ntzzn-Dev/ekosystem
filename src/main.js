@@ -1,12 +1,16 @@
 import { ref, push, onValue, get, set, child } from "firebase/database";
 import { database } from "./firebase.js";
 
+import QRCode from "qrcode";
+
 let localConnection;
 let dataChannel;
 let roomIdInput = document.getElementById("room-id");
 let messages = document.getElementById("messages");
 let messageInput = document.getElementById("message");
 let fileInput = document.getElementById("file-input");
+
+let valorDaChave;
 
 function gerarChave(tamanho = 8) {
   const bytes = new Uint8Array(6);
@@ -18,9 +22,47 @@ function gerarChave(tamanho = 8) {
   return btoa(binary);
 }
 
+function startScanner() {
+  const readerDiv = document.getElementById("reader");
+  readerDiv.style.display = "block";
+
+  const html5QrCode = new Html5Qrcode("reader");
+  html5QrCode
+    .start(
+      { facingMode: "environment" },
+      {
+        fps: 10,
+        qrbox: { width: 250, height: 250 },
+      },
+      (decodedText, decodedResult) => {
+        valorDaChave = decodedText;
+        roomIdInput.value = valorDaChave;
+        entrarNoP2P();
+        html5QrCode.stop();
+        readerDiv.style.display = "none";
+      },
+      (errorMessage) => {}
+    )
+    .catch((err) => {
+      console.error("Erro ao acessar câmera: ", err);
+    });
+}
+
 document.getElementById("create-btn").onclick = async () => {
   const chave = gerarChave();
   const roomId = chave;
+
+  QRCode.toDataURL(chave, function (err, url) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+
+    const img = document.createElement("img");
+    img.src = url;
+    document.getElementById("qrcode").appendChild(img);
+  });
+
   roomIdInput.value = chave;
   roomIdInput.disabled = true;
   const roomRef = ref(database, "rooms/" + roomId);
@@ -55,7 +97,9 @@ document.getElementById("create-btn").onclick = async () => {
   });
 };
 
-document.getElementById("join-btn").onclick = async () => {
+document.getElementById("join-btn").onclick = entrarNoP2P();
+
+async function entrarNoP2P() {
   const roomId = roomIdInput.value;
   const roomRef = ref(database, "rooms/" + roomId);
 
@@ -90,7 +134,7 @@ document.getElementById("join-btn").onclick = async () => {
   });
 
   document.getElementById("chat").style.display = "block";
-};
+}
 
 document.getElementById("send-btn").onclick = () => {
   if (dataChannel.readyState === "open") {
