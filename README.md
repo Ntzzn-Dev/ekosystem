@@ -21,5 +21,5 @@ version 1.3 & 1.3.1 & 1.3.2:
   Gera um Qrcode como chave e ja abre a sessão
 version 1.4: 
   Implementação de estilização
-version 1.4.1:
+version 1.4.1 & 1.4.2:
   Pequenas correções de front e de lógica

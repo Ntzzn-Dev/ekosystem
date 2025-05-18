@@ -98,7 +98,7 @@ document.getElementById("create-btn").onclick = async () => {
   });
 };
 
-document.getElementById("join-btn").onclick = entrarNoP2P();
+document.getElementById("join-btn").onclick = () => entrarNoP2P();
 
 async function entrarNoP2P() {
   const roomId = roomIdInput.value;
