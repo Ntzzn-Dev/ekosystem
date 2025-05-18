@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>WebRTC App</title>
+    <script type="module" crossorigin src="/ekosystem/assets/index-z-_VJ6_J.js"></script>
+  </head>
+  <body>
+    <h2>Conexão P2P - WebRTC</h2>
+    <input type="text" id="room-id" placeholder="Código da sala" />
+    <button id="create-btn">Criar sala</button>
+    <button id="join-btn">Entrar na sala</button>
+
+    <div id="chat" style="display: none">
+      <textarea id="messages" rows="10" cols="50" readonly></textarea><br />
+      <input type="text" id="message" placeholder="Digite uma mensagem" />
+      <button id="send-btn">Enviar</button><br /><br />
+      <input type="file" id="file-input" />
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+  </body>
+</html>
