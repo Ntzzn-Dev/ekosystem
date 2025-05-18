@@ -3,26 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <title>Ekosystem</title>
-    <script type="module" crossorigin src="/ekosystem/assets/index-C3n3hH77.js"></script>
-    <link rel="stylesheet" crossorigin href="/ekosystem/assets/index-DsmQjlat.css">
+    <script type="module" crossorigin src="/ekosystem/assets/index-Cwwd4aqT.js"></script>
+    <link rel="stylesheet" crossorigin href="/ekosystem/assets/index-9k5zZO-o.css">
   </head>
   <body>
-    <h2>Ekosystem</h2>
-
-    <button id="create-btn">Criar sala</button>
-    <div id="entrada" style="display: block">
-      <input type="text" id="room-id" placeholder="Código da sala" />
-      <button id="join-btn">Entrar na sala</button>
-    </div>
-    <div id="reader" style="width: 300px; display: none"></div>
-    <button id="scan-btn">Escanear QR Code</button>
-    <div id="qrcode" style="display: none"></div>
+    <h1>Ekosystem</h1>
+    <section class="actions" style="display: block">
+      <button id="create-btn">Criar sala</button>
+      <div id="entrada" style="display: flex">
+        <input type="text" id="room-id" placeholder="Código da sala" />
+        <button id="join-btn">Entrar na sala</button>
+        <button id="scan-btn">Escanear QR Code</button>
+      </div>
+      <div id="reader" style="width: 300px; display: none"></div>
+      <div id="qrcode" style="display: none"></div>
+    </section>
 
     <div id="chat" style="display: none">
-      <textarea id="messages" rows="10" cols="50" readonly></textarea><br />
-      <input type="text" id="message" placeholder="Digite uma mensagem" />
-      <button id="send-btn">Enviar</button><br /><br />
-      <input type="file" id="file-input" />
+      <section id="arqs" class="arqs"></section>
+
+      <section class="actions">
+        <input type="file" id="file-input" hidden />
+        <label for="file-input" class="custom-file-label">
+          📁 Selecionar arquivo
+        </label>
+      </section>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
