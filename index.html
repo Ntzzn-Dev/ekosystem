@@ -26,10 +26,9 @@
         <label for="file-input" class="custom-file-label">
           📁 Selecionar arquivo
         </label>
-      </section>
 
-      <div id="send-progress-container" style="display: none">
-        <p id="send-progress-text">Enviando: 0%</p>
+        <div id="send-progress-container" style="display: none" class="progress-container">
+        <p id="send-progress-text" class="progress-text">Enviando: 0%</p>
         <progress
           id="send-progress-bar"
           value="0"
@@ -38,8 +37,8 @@
         ></progress>
       </div>
 
-      <div id="receive-progress-container" style="display: none">
-        <p id="receive-progress-text">Recebendo: 0%</p>
+      <div id="receive-progress-container" style="display: none" class="progress-container">
+        <p id="receive-progress-text" class="progress-text">Recebendo: 0%</p>
         <progress
           id="receive-progress-bar"
           value="0"
@@ -48,6 +47,9 @@
         ></progress>
       </div>
     </div>
+      </section>
+
+      
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>

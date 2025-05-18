@@ -175,12 +175,13 @@ fileInput.onchange = () => {
   const reader = new FileReader();
 
   reader.onload = (event) => {
+    sendProgressContainer.style.display = "block";
     dataChannel.send(event.target.result);
     offset += chunkSize;
 
     const percent = Math.min((offset / file.size) * 100, 100);
     sendProgressBar.value = percent;
-    sendProgressText.textContent = `Enviando: ${percent.toFixed(2)}%`;
+    sendProgressText.textContent = `Enviando: ${percent.toFixed(0)}%`;
 
     if (offset < file.size) {
       readSlice(offset);
@@ -227,9 +228,16 @@ function setupDataChannel(channel) {
           receivedChunks.push(event.data);
           receivedBytes += event.data.byteLength;
 
-          const percent = Math.min((receivedBytes / expectedSize) * 100, 100);
-          receiveProgressBar.value = percent;
-          receiveProgressText.textContent = `Recebendo: ${percent.toFixed(2)}%`;
+          if (expectedSize > 0 && receivedBytes >= 0) {
+            const progress = (receivedBytes / expectedSize) * 100;
+            if (isFinite(progress)) {
+              const percent = Math.min(progress, 100);
+              receiveProgressBar.value = percent;
+              receiveProgressText.textContent = `Recebendo: ${percent.toFixed(
+                0
+              )}%`;
+            }
+          }
         }
 
         if (data.type === "file-end") {
