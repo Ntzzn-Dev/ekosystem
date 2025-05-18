@@ -137,14 +137,22 @@ async function entrarNoP2P() {
 
 fileInput.onchange = () => {
   const file = fileInput.files[0];
-  dataChannel.send(JSON.stringify({ type: "file-info", name: file.name }));
+  if (!file) return;
+
+  const receivedFileName = file.name;
+  const url = URL.createObjectURL(file);
+
+  dataChannel.send(
+    JSON.stringify({ type: "file-info", name: receivedFileName })
+  );
+
   const reader = new FileReader();
   reader.onload = () => {
     dataChannel.send(reader.result);
   };
   reader.readAsArrayBuffer(file);
 
-  //appendFile(receivedFileName, "Externo", url);
+  appendFile(receivedFileName, "Interno", url);
 };
 
 function setupDataChannel(channel) {
@@ -158,19 +166,21 @@ function setupDataChannel(channel) {
   };
 
   channel.onmessage = (event) => {
-    console.log("recebido");
     if (typeof event.data === "string") {
       try {
         const data = JSON.parse(event.data);
         if (data.type === "file-info" && data.name) {
           receivedFileName = data.name;
+          return;
         }
       } catch {}
-    }
-    const blob = new Blob([event.data]);
-    const url = URL.createObjectURL(blob);
+    } else {
+      const blob = new Blob([event.data]);
+      const url = URL.createObjectURL(blob);
 
-    appendFile(receivedFileName, "Externo", url);
+      appendFile(receivedFileName, "Externo", url);
+      const link = document.createElement("a");
+    }
   };
 }
 
