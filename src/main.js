@@ -172,15 +172,15 @@ function setupDataChannel(channel) {
         const data = JSON.parse(event.data);
         if (data.type === "file-info" && data.name) {
           receivedFileName = data.name;
+
+          const blob = new Blob([event.data]);
+          const url = URL.createObjectURL(blob);
+
+          appendFile(receivedFileName, "Externo", url);
           return;
         }
       } catch {}
     }
-    const blob = new Blob([event.data]);
-    const url = URL.createObjectURL(blob);
-
-    appendFile(receivedFileName, "Externo", url);
-    const link = document.createElement("a");
   };
 }
 
