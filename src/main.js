@@ -8,8 +8,21 @@ let messages = document.getElementById("messages");
 let messageInput = document.getElementById("message");
 let fileInput = document.getElementById("file-input");
 
+function gerarChave(tamanho = 8) {
+  const bytes = new Uint8Array(6);
+  crypto.getRandomValues(bytes);
+
+  let binary = "";
+  bytes.forEach((b) => (binary += String.fromCharCode(b)));
+
+  return btoa(binary);
+}
+
 document.getElementById("create-btn").onclick = async () => {
-  const roomId = roomIdInput.value;
+  const chave = gerarChave();
+  const roomId = chave;
+  roomIdInput.value = chave;
+  roomIdInput.disabled = true;
   const roomRef = ref(database, "rooms/" + roomId);
   localConnection = new RTCPeerConnection();
   dataChannel = localConnection.createDataChannel("chat");
@@ -77,8 +90,21 @@ document.getElementById("join-btn").onclick = async () => {
       localConnection.addIceCandidate(candidate);
     });
   });
+};
 
+dataChannel.onopen = () => {
   document.getElementById("chat").style.display = "block";
+};
+
+document.getElementById("send-btn").onclick = () => {
+  if (dataChannel.readyState === "open") {
+    const message = messageInput.value;
+    dataChannel.send(message);
+    appendMessage("Você: " + message);
+    messageInput.value = "";
+  } else {
+    console.log("Canal não está aberto ainda. Tente novamente mais tarde.");
+  }
 };
 
 document.getElementById("send-btn").onclick = () => {
@@ -90,6 +116,7 @@ document.getElementById("send-btn").onclick = () => {
 
 fileInput.onchange = () => {
   const file = fileInput.files[0];
+  dataChannel.send(JSON.stringify({ type: "file-info", name: file.name }));
   const reader = new FileReader();
   reader.onload = () => {
     dataChannel.send(reader.result);
@@ -99,16 +126,27 @@ fileInput.onchange = () => {
 };
 
 function setupDataChannel(channel) {
+  let receivedFileName = "arquivo_recebido";
+
   channel.onmessage = (event) => {
     if (typeof event.data === "string") {
-      appendMessage("Outro: " + event.data);
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === "file-info" && data.name) {
+          receivedFileName = data.name;
+          appendMessage(`Recebendo arquivo: ${receivedFileName}`);
+          return;
+        }
+      } catch {
+        appendMessage("Outro: " + event.data);
+      }
     } else {
       appendMessage("Arquivo recebido.");
       const blob = new Blob([event.data]);
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "arquivo_recebido.pptx";
+      link.download = receivedFileName;
       link.click();
     }
   };

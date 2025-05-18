@@ -13,3 +13,5 @@ version 1.1:
   Tentativa de uma conexão constante com o firebase realtime database
 version 1.1.1:
   Teste sobre extensão do arquivo
+version 1.2:
+  Adição de chave sendo gerada aleatóriamente; Chat sendo exibido apenas quando os dois estiverem na sala
