@@ -29,3 +29,5 @@ version 1.4.12:
   Adição do codigo por escrito  
 version 1.4.13:  
   Correção do front-end  
+version 1.5:
+  Envio de partes separadas dos arquivos
