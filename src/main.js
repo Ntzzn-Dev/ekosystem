@@ -7,6 +7,19 @@ let localConnection;
 let dataChannel;
 let roomIdInput = document.getElementById("room-id");
 let fileInput = document.getElementById("file-input");
+const sendProgressContainer = document.getElementById(
+  "send-progress-container"
+);
+const sendProgressBar = document.getElementById("send-progress-bar");
+const sendProgressText = document.getElementById("send-progress-text");
+const receiveProgressContainer = document.getElementById(
+  "receive-progress-container"
+);
+const receiveProgressBar = document.getElementById("receive-progress-bar");
+const receiveProgressText = document.getElementById("receive-progress-text");
+
+let expectedSize = 0;
+let receivedBytes = 0;
 
 let valorDaChave;
 
@@ -141,26 +154,6 @@ async function entrarNoP2P() {
   });
 }
 
-/*fileInput.onchange = () => {
-  const file = fileInput.files[0];
-  if (!file) return;
-
-  const receivedFileName = file.name;
-  const url = URL.createObjectURL(file);
-
-  dataChannel.send(
-    JSON.stringify({ type: "file-info", name: receivedFileName })
-  );
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    dataChannel.send(reader.result);
-  };
-  reader.readAsArrayBuffer(file);
-
-  appendFile(receivedFileName, "Interno", url);
-};*/
-
 fileInput.onchange = () => {
   const file = fileInput.files[0];
   if (!file) return;
@@ -184,10 +177,17 @@ fileInput.onchange = () => {
   reader.onload = (event) => {
     dataChannel.send(event.target.result);
     offset += chunkSize;
+
+    const percent = Math.min((offset / file.size) * 100, 100);
+    sendProgressBar.value = percent;
+    sendProgressText.textContent = `Enviando: ${percent.toFixed(2)}%`;
+
     if (offset < file.size) {
       readSlice(offset);
     } else {
       dataChannel.send(JSON.stringify({ type: "file-end" }));
+      sendProgressText.textContent = "Envio concluído!";
+      setTimeout(() => (sendProgressContainer.style.display = "none"), 2000);
     }
   };
 
@@ -220,7 +220,16 @@ function setupDataChannel(channel) {
         if (data.type === "file-info" && data.name) {
           receivedFileName = data.name;
           receivedChunks = [];
+          receivedBytes = 0;
+          receiveProgressContainer.style.display = "block";
           return;
+        } else {
+          receivedChunks.push(event.data);
+          receivedBytes += event.data.byteLength;
+
+          const percent = Math.min((receivedBytes / expectedSize) * 100, 100);
+          receiveProgressBar.value = percent;
+          receiveProgressText.textContent = `Recebendo: ${percent.toFixed(2)}%`;
         }
 
         if (data.type === "file-end") {
@@ -228,6 +237,12 @@ function setupDataChannel(channel) {
           const url = URL.createObjectURL(blob);
           appendFile(receivedFileName, "Externo", url);
           receivedChunks = [];
+
+          receiveProgressText.textContent = "Recebimento concluído!";
+          setTimeout(
+            () => (receiveProgressContainer.style.display = "none"),
+            2000
+          );
           return;
         }
       } catch (err) {
@@ -238,34 +253,6 @@ function setupDataChannel(channel) {
     }
   };
 }
-
-/*function setupDataChannel(channel) {
-  let receivedFileName = "arquivo_recebido";
-
-  channel.onopen = () => {
-    console.log("Canal aberto.");
-
-    document.getElementById("actions").style.display = "none";
-    document.getElementById("chat").style.display = "flex";
-  };
-
-  channel.onmessage = (event) => {
-    if (typeof event.data === "string") {
-      try {
-        const data = JSON.parse(event.data);
-        if (data.type === "file-info" && data.name) {
-          receivedFileName = data.name;
-          return;
-        }
-      } catch {}
-    } else {
-      const blob = new Blob([event.data]);
-      const url = URL.createObjectURL(blob);
-
-      appendFile(receivedFileName, "Externo", url);
-    }
-  };
-}*/
 
 function appendFile(nome, usuario, link) {
   console.log(nome);

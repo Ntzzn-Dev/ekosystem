@@ -27,6 +27,26 @@
           📁 Selecionar arquivo
         </label>
       </section>
+
+      <div id="send-progress-container" style="display: none">
+        <p id="send-progress-text">Enviando: 0%</p>
+        <progress
+          id="send-progress-bar"
+          value="0"
+          max="100"
+          style="width: 100%"
+        ></progress>
+      </div>
+
+      <div id="receive-progress-container" style="display: none">
+        <p id="receive-progress-text">Recebendo: 0%</p>
+        <progress
+          id="receive-progress-bar"
+          value="0"
+          max="100"
+          style="width: 100%"
+        ></progress>
+      </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
