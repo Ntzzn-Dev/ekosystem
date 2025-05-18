@@ -15,5 +15,5 @@ version 1.1.1:
   Teste sobre extensão do arquivo
 version 1.2:
   Adição de chave sendo gerada aleatóriamente; Correção da extensão do arquivo enviado
-version 1.2.1 & 1.2.2:
+version 1.2.1 & 1.2.2 & 1.2.3:
   Correção do chat sendo exibido apenas quando os dois estiverem na sala

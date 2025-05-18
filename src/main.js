@@ -92,13 +92,6 @@ document.getElementById("join-btn").onclick = async () => {
   document.getElementById("chat").style.display = "block";
 };
 
-dataChannel.onopen = () => {
-  console.log(
-    "Conexão P2P estabelecida com sucesso. Canal de dados está aberto."
-  );
-  document.getElementById("chat").style.display = "block";
-};
-
 document.getElementById("send-btn").onclick = () => {
   if (dataChannel.readyState === "open") {
     const message = messageInput.value;
@@ -123,6 +116,11 @@ fileInput.onchange = () => {
 
 function setupDataChannel(channel) {
   let receivedFileName = "arquivo_recebido";
+
+  channel.onopen = () => {
+    console.log("Canal aberto.");
+    document.getElementById("chat").style.display = "block";
+  };
 
   channel.onmessage = (event) => {
     if (typeof event.data === "string") {
