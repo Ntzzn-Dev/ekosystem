@@ -174,7 +174,7 @@ function setupDataChannel(channel) {
   };
 }
 
-function appendFile(nome, usuario, link) {
+function appendFile(nome, extensao, link) {
   const arq = document.createElement("div");
   arq.classList.add("arq");
 
@@ -187,7 +187,7 @@ function appendFile(nome, usuario, link) {
 
   const extP = document.createElement("p");
   extP.classList.add("ext");
-  extP.textContent = usuario;
+  extP.textContent = extensao;
   section.appendChild(extP);
 
   const a = document.createElement("a");
