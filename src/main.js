@@ -59,7 +59,11 @@ document.getElementById("create-btn").onclick = async () => {
     }
 
     const img = document.createElement("img");
+    const p = document.createElement("p");
+    p.textContent = chave;
     img.src = url;
+
+    document.getElementById("qrcode").appendChild(p);
     document.getElementById("qrcode").appendChild(img);
     document.getElementById("qrcode").style.display = "flex";
   });
@@ -179,7 +183,6 @@ function setupDataChannel(channel) {
       const url = URL.createObjectURL(blob);
 
       appendFile(receivedFileName, "Externo", url);
-      const link = document.createElement("a");
     }
   };
 }
@@ -190,21 +193,22 @@ function appendFile(nome, usuario, link) {
   arq.classList.add("arq");
 
   const nomeP = document.createElement("p");
+  nomeP.classList.add("nome-file");
   nomeP.textContent = nome;
   arq.appendChild(nomeP);
 
   const section = document.createElement("section");
   section.classList.add("arq-col");
 
-  const extP = document.createElement("p");
-  extP.classList.add("ext");
-  extP.textContent = usuario;
-  section.appendChild(extP);
+  const userP = document.createElement("p");
+  userP.classList.add("user-file");
+  userP.textContent = usuario;
+  section.appendChild(userP);
 
   const a = document.createElement("a");
+  userP.classList.add("download-file");
   a.href = link;
   a.download = nome;
-  a.style.color = "var(--cor-secundaria)";
 
   a.innerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none"
