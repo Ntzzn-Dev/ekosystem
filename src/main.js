@@ -22,7 +22,7 @@ function gerarChave(tamanho = 8) {
   return btoa(binary);
 }
 
-document.getElementById("create-btn").onclick = () => {
+document.getElementById("scan-btn").onclick = () => {
   const readerDiv = document.getElementById("reader");
   readerDiv.style.display = "block";
 
