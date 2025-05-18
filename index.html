@@ -1,74 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
   <head>
-    <title>WebRTC Chat</title>
+    <meta charset="UTF-8" />
+    <title>WebRTC App</title>
   </head>
   <body>
-    <textarea id="log" cols="40" rows="15" readonly></textarea><br />
-    <input id="message" type="text" placeholder="Digite uma mensagem" />
-    <button onclick="sendMessage()">Enviar</button>
-    <button onclick="promptPaste()">Colar Resposta</button>
+    <h2>Conexão P2P - WebRTC</h2>
+    <input type="text" id="room-id" placeholder="Código da sala" />
+    <button id="create-btn">Criar sala</button>
+    <button id="join-btn">Entrar na sala</button>
 
-    <script>
-      const log = (msg) => {
-        const logBox = document.getElementById("log");
-        logBox.value += msg + "\n";
-      };
+    <div id="chat" style="display: none">
+      <textarea id="messages" rows="10" cols="50" readonly></textarea><br />
+      <input type="text" id="message" placeholder="Digite uma mensagem" />
+      <button id="send-btn">Enviar</button><br /><br />
+      <input type="file" id="file-input" />
+    </div>
 
-      const pc = new RTCPeerConnection();
-      let dataChannel;
-
-      const isCaller = window.location.hash === "#caller";
-
-      if (isCaller) {
-        dataChannel = pc.createDataChannel("chat");
-        dataChannel.onopen = () => log("✅ Canal de dados aberto (PC)");
-        dataChannel.onmessage = (e) => log("📥 Recebido: " + e.data);
-
-        pc.createOffer().then((offer) => pc.setLocalDescription(offer));
-
-        pc.onicecandidate = (event) => {
-          if (event.candidate === null) {
-            log("📤 Oferta SDP:\n" + JSON.stringify(pc.localDescription));
-          }
-        };
-      } else {
-        pc.ondatachannel = (event) => {
-          dataChannel = event.channel;
-          dataChannel.onopen = () => log("✅ Canal de dados aberto (Celular)");
-          dataChannel.onmessage = (e) => log("📥 Recebido: " + e.data);
-        };
-
-        pc.onicecandidate = (event) => {
-          if (event.candidate === null) {
-            log("📤 Resposta SDP:\n" + JSON.stringify(pc.localDescription));
-          }
-        };
-      }
-
-      async function pasteAnswer(text) {
-        const remoteDesc = new RTCSessionDescription(JSON.parse(text));
-        await pc.setRemoteDescription(remoteDesc);
-        if (!isCaller) {
-          const answer = await pc.createAnswer();
-          await pc.setLocalDescription(answer);
-        }
-      }
-
-      function promptPaste() {
-        const resposta = prompt("Cole aqui a SDP do outro dispositivo:");
-        if (resposta) pasteAnswer(resposta);
-      }
-
-      function sendMessage() {
-        const message = document.getElementById("message").value;
-        if (dataChannel && dataChannel.readyState === "open") {
-          dataChannel.send(message);
-          log("📤 Enviado: " + message);
-        } else {
-          log("❌ Canal de dados ainda não está aberto.");
-        }
-      }
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script type="module" src="/src/main.js"></script>
   </body>
 </html>
