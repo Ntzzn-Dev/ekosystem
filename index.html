@@ -3,15 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <title>Ekosystem</title>
-    <script type="module" crossorigin src="/ekosystem/assets/index-D2MwtI2T.js"></script>
+    <script type="module" crossorigin src="/ekosystem/assets/index-_ll0Fd-4.js"></script>
     <link rel="stylesheet" crossorigin href="/ekosystem/assets/index-DsmQjlat.css">
   </head>
   <body>
     <h2>Ekosystem</h2>
 
     <button id="create-btn">Criar sala</button>
-    <input type="text" id="room-id" placeholder="Código da sala" />
-    <button id="join-btn">Entrar na sala</button>
+    <div id="entrada" style="display: block">
+      <input type="text" id="room-id" placeholder="Código da sala" />
+      <button id="join-btn">Entrar na sala</button>
+    </div>
+    <div id="reader" style="width: 300px; display: none"></div>
+    <button onclick="startScanner()">Escanear QR Code</button>
+    <div id="qrcode" style="display: none"></div>
 
     <div id="chat" style="display: none">
       <textarea id="messages" rows="10" cols="50" readonly></textarea><br />
@@ -22,5 +27,9 @@
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script
+      src="https://unpkg.com/html5-qrcode"
+      type="text/javascript"
+    ></script>
   </body>
 </html>
