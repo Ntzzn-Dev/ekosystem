@@ -141,7 +141,7 @@ async function entrarNoP2P() {
   });
 }
 
-fileInput.onchange = () => {
+/*fileInput.onchange = () => {
   const file = fileInput.files[0];
   if (!file) return;
 
@@ -159,9 +159,87 @@ fileInput.onchange = () => {
   reader.readAsArrayBuffer(file);
 
   appendFile(receivedFileName, "Interno", url);
+};*/
+
+fileInput.onchange = () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  const receivedFileName = file.name;
+  const url = URL.createObjectURL(file);
+
+  const chunkSize = 16 * 1024;
+  let offset = 0;
+
+  dataChannel.send(
+    JSON.stringify({
+      type: "file-info",
+      name: receivedFileName,
+      size: file.size,
+    })
+  );
+
+  const reader = new FileReader();
+
+  reader.onload = (event) => {
+    dataChannel.send(event.target.result);
+    offset += chunkSize;
+    if (offset < file.size) {
+      readSlice(offset);
+    } else {
+      dataChannel.send(JSON.stringify({ type: "file-end" }));
+    }
+  };
+
+  function readSlice(o) {
+    const slice = file.slice(o, o + chunkSize);
+    reader.readAsArrayBuffer(slice);
+  }
+
+  readSlice(0);
+
+  appendFile(receivedFileName, "Interno", url);
 };
 
 function setupDataChannel(channel) {
+  let receivedChunks = [];
+  let receivedFileName = "arquivo_recebido";
+
+  channel.onopen = () => {
+    console.log("Canal aberto.");
+
+    document.getElementById("actions").style.display = "none";
+    document.getElementById("chat").style.display = "flex";
+  };
+
+  channel.onmessage = (event) => {
+    if (typeof event.data === "string") {
+      try {
+        const data = JSON.parse(event.data);
+
+        if (data.type === "file-info" && data.name) {
+          receivedFileName = data.name;
+          receivedChunks = [];
+          return;
+        }
+
+        if (data.type === "file-end") {
+          const blob = new Blob(receivedChunks);
+          const url = URL.createObjectURL(blob);
+          appendFile(receivedFileName, "Externo", url);
+          receivedChunks = [];
+          return;
+        }
+      } catch (err) {
+        console.error("Erro ao interpretar string recebida:", err);
+      }
+    } else {
+      receivedChunks.push(event.data);
+    }
+  };
+}
+
+/*function setupDataChannel(channel) {
   let receivedFileName = "arquivo_recebido";
 
   channel.onopen = () => {
@@ -187,7 +265,7 @@ function setupDataChannel(channel) {
       appendFile(receivedFileName, "Externo", url);
     }
   };
-}
+}*/
 
 function appendFile(nome, usuario, link) {
   console.log(nome);
@@ -209,6 +287,7 @@ function appendFile(nome, usuario, link) {
 
   const a = document.createElement("a");
   a.classList.add("download-file");
+  usuario == "Externo" ? a.classList.add("ext") : a.classList.add("int");
   a.href = link;
   a.download = nome;
 

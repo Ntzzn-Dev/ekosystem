@@ -2,6 +2,7 @@
   --cor-principal: #e87a64;
   --cor-secundaria: #132541;
 }
+
 html,
 body {
   margin: 0;
@@ -30,14 +31,12 @@ button {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin: 15px 0px;
   width: 100%;
-}
-
-button:hover {
-  transform: scale(1.05);
-}
-
-button:active {
-  transform: scale(0.98);
+  &:hover {
+    transform: scale(1.05);
+  }
+  &:active {
+    transform: scale(0.98);
+  }
 }
 
 input[type="text"] {
@@ -51,10 +50,9 @@ input[type="text"] {
   background-color: var(--cor-secundaria);
   color: var(--cor-principal);
   margin: 15px 0px;
-}
-
-input[type="text"]:focus {
-  box-shadow: 0 0 0 4px #e87a6433;
+  &:focus {
+    box-shadow: 0 0 0 4px #e87a6433;
+  }
 }
 
 #entrada {
@@ -90,7 +88,7 @@ input[type="text"]:focus {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  width: 27%;
+  width: 17%;
 }
 
 .user-file {
@@ -103,8 +101,13 @@ input[type="text"]:focus {
 }
 
 .download-file {
-  color: var(--cor-secundaria);
   display: flex;
+  & int {
+    color: var(--cor-principal);
+  }
+  & ext {
+    color: var(--cor-secundaria);
+  }
 }
 
 .custom-file-label {
@@ -122,14 +125,12 @@ input[type="text"]:focus {
   font-family: Arial, Helvetica, sans-serif;
   width: 100%;
   text-align: center;
-}
-
-.custom-file-label:hover {
-  transform: scale(1.03);
-}
-
-.custom-file-label:active {
-  transform: scale(0.98);
+  &:hover {
+    transform: scale(1.03);
+  }
+  &:active {
+    transform: scale(0.98);
+  }
 }
 
 #chat {
