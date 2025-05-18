@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <title>Ekosystem</title>
-    <script type="module" crossorigin src="/ekosystem/assets/index-CtI4J0nG.js"></script>
-    <link rel="stylesheet" crossorigin href="/ekosystem/assets/index-UvwyVB-u.css">
+    <script type="module" crossorigin src="/ekosystem/assets/index-B8FFcpfF.js"></script>
+    <link rel="stylesheet" crossorigin href="/ekosystem/assets/index-BR8S9TOb.css">
   </head>
   <body>
     <h1>Ekosystem</h1>
@@ -27,10 +27,9 @@
         <label for="file-input" class="custom-file-label">
           📁 Selecionar arquivo
         </label>
-      </section>
 
-      <div id="send-progress-container" style="display: none">
-        <p id="send-progress-text">Enviando: 0%</p>
+        <div id="send-progress-container" style="display: none" class="progress-container">
+        <p id="send-progress-text" class="progress-text">Enviando: 0%</p>
         <progress
           id="send-progress-bar"
           value="0"
@@ -39,8 +38,8 @@
         ></progress>
       </div>
 
-      <div id="receive-progress-container" style="display: none">
-        <p id="receive-progress-text">Recebendo: 0%</p>
+      <div id="receive-progress-container" style="display: none" class="progress-container">
+        <p id="receive-progress-text" class="progress-text">Recebendo: 0%</p>
         <progress
           id="receive-progress-bar"
           value="0"
@@ -49,6 +48,9 @@
         ></progress>
       </div>
     </div>
+      </section>
+
+      
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
