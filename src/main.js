@@ -143,8 +143,6 @@ fileInput.onchange = () => {
     dataChannel.send(reader.result);
   };
   reader.readAsArrayBuffer(file);
-
-  //appendFile(receivedFileName, "Externo", url);
 };
 
 function setupDataChannel(channel) {
@@ -170,7 +168,8 @@ function setupDataChannel(channel) {
       const blob = new Blob([event.data]);
       const url = URL.createObjectURL(blob);
 
-      appendFile(receivedFileName, "Externo", url);
+      appendFile(receivedFileName, receivedFileName, url);
+      const link = document.createElement("a");
     }
   };
 }
