@@ -6,8 +6,6 @@ import QRCode from "qrcode";
 let localConnection;
 let dataChannel;
 let roomIdInput = document.getElementById("room-id");
-let messages = document.getElementById("messages");
-let messageInput = document.getElementById("message");
 let fileInput = document.getElementById("file-input");
 
 let valorDaChave;
@@ -49,6 +47,8 @@ document.getElementById("scan-btn").onclick = () => {
 };
 
 document.getElementById("create-btn").onclick = async () => {
+  document.getElementById("entrada").style.display = "none";
+
   const chave = gerarChave();
   const roomId = chave;
 
@@ -137,24 +137,12 @@ async function entrarNoP2P() {
   document.getElementById("chat").style.display = "block";
 }
 
-document.getElementById("send-btn").onclick = () => {
-  if (dataChannel.readyState === "open") {
-    const message = messageInput.value;
-    dataChannel.send(message);
-    appendMessage("Você: " + message);
-    messageInput.value = "";
-  } else {
-    console.log("Canal não está aberto ainda. Tente novamente mais tarde.");
-  }
-};
-
 fileInput.onchange = () => {
   const file = fileInput.files[0];
   dataChannel.send(JSON.stringify({ type: "file-info", name: file.name }));
   const reader = new FileReader();
   reader.onload = () => {
     dataChannel.send(reader.result);
-    appendMessage("Você enviou um arquivo.");
   };
   reader.readAsArrayBuffer(file);
 };
@@ -173,24 +161,52 @@ function setupDataChannel(channel) {
         const data = JSON.parse(event.data);
         if (data.type === "file-info" && data.name) {
           receivedFileName = data.name;
-          appendMessage(`Recebendo arquivo: ${receivedFileName}`);
           return;
         }
-      } catch {
-        appendMessage("Outro: " + event.data);
-      }
+      } catch {}
     } else {
-      appendMessage("Arquivo recebido.");
       const blob = new Blob([event.data]);
       const url = URL.createObjectURL(blob);
+
+      appendFile(receivedFileName, receivedFileName, url);
       const link = document.createElement("a");
-      link.href = url;
-      link.download = receivedFileName;
-      link.click();
     }
   };
 }
 
-function appendMessage(msg) {
-  messages.value += msg + "\n";
+function appendFile(nome, extensao, link) {
+  const arq = document.createElement("div");
+  arq.classList.add("arq");
+
+  const nomeP = document.createElement("p");
+  nomeP.textContent = nome;
+  arq.appendChild(nomeP);
+
+  const section = document.createElement("section");
+  section.classList.add("arq-col");
+
+  const extP = document.createElement("p");
+  extP.classList.add("ext");
+  extP.textContent = extensao;
+  section.appendChild(extP);
+
+  const a = document.createElement("a");
+  a.href = link;
+  a.download = nome;
+  a.style.color = "var(--cor-secundaria)";
+
+  a.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none"
+         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round"
+            d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/>
+      <path stroke-linecap="round" stroke-linejoin="round"
+            d="M7 10l5 5m0 0l5-5m-5 5V4"/>
+    </svg>
+  `;
+
+  section.appendChild(a);
+  arq.appendChild(section);
+
+  document.getElementById("arqs").appendChild(arq);
 }
