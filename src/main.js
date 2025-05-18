@@ -166,6 +166,7 @@ function setupDataChannel(channel) {
   };
 
   channel.onmessage = (event) => {
+    console.log("Tipo recebido:", typeof event.data, event.data);
     if (typeof event.data === "string") {
       try {
         const data = JSON.parse(event.data);
