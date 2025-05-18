@@ -61,7 +61,7 @@ document.getElementById("create-btn").onclick = async () => {
     const img = document.createElement("img");
     img.src = url;
     document.getElementById("qrcode").appendChild(img);
-    document.getElementById("qrcode").style.display = "block";
+    document.getElementById("qrcode").style.display = "flex";
   });
 
   roomIdInput.value = chave;
@@ -133,18 +133,26 @@ async function entrarNoP2P() {
       localConnection.addIceCandidate(candidate);
     });
   });
-
-  document.getElementById("chat").style.display = "block";
 }
 
 fileInput.onchange = () => {
   const file = fileInput.files[0];
-  dataChannel.send(JSON.stringify({ type: "file-info", name: file.name }));
+  if (!file) return;
+
+  const receivedFileName = file.name;
+  const url = URL.createObjectURL(file);
+
+  dataChannel.send(
+    JSON.stringify({ type: "file-info", name: receivedFileName })
+  );
+
   const reader = new FileReader();
   reader.onload = () => {
     dataChannel.send(reader.result);
   };
   reader.readAsArrayBuffer(file);
+
+  appendFile(receivedFileName, "Interno", url);
 };
 
 function setupDataChannel(channel) {
@@ -152,7 +160,9 @@ function setupDataChannel(channel) {
 
   channel.onopen = () => {
     console.log("Canal aberto.");
-    document.getElementById("chat").style.display = "block";
+
+    document.getElementById("actions").style.display = "none";
+    document.getElementById("chat").style.display = "flex";
   };
 
   channel.onmessage = (event) => {
@@ -168,32 +178,33 @@ function setupDataChannel(channel) {
       const blob = new Blob([event.data]);
       const url = URL.createObjectURL(blob);
 
-      appendFile(receivedFileName, receivedFileName, url);
+      appendFile(receivedFileName, "Externo", url);
       const link = document.createElement("a");
     }
   };
 }
 
-function appendFile(nome, extensao, link) {
+function appendFile(nome, usuario, link) {
   const arq = document.createElement("div");
   arq.classList.add("arq");
 
   const nomeP = document.createElement("p");
+  nomeP.classList.add("name-file");
   nomeP.textContent = nome;
   arq.appendChild(nomeP);
 
   const section = document.createElement("section");
   section.classList.add("arq-col");
 
-  const extP = document.createElement("p");
-  extP.classList.add("ext");
-  extP.textContent = extensao;
-  section.appendChild(extP);
+  const userP = document.createElement("p");
+  userP.classList.add("user-file");
+  userP.textContent = usuario;
+  section.appendChild(userP);
 
   const a = document.createElement("a");
+  a.classList.add("download-file");
   a.href = link;
   a.download = nome;
-  a.style.color = "var(--cor-secundaria)";
 
   a.innerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none"

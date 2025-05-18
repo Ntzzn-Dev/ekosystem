@@ -93,8 +93,18 @@ input[type="text"]:focus {
   width: 27%;
 }
 
-.ext {
+.user-file {
+  font-size: small;
+  margin: 0;
+}
+
+.name-file {
   font-size: medium;
+}
+
+.download-file {
+  color: var(--cor-principal);
+  display: flex;
 }
 
 .custom-file-label {
@@ -126,4 +136,10 @@ input[type="text"]:focus {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+#qrcode {
+  display: flex;
+  justify-content: center;
+  padding: 15px;
 }
