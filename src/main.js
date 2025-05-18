@@ -175,13 +175,12 @@ function setupDataChannel(channel) {
           return;
         }
       } catch {}
-    } else {
-      const blob = new Blob([event.data]);
-      const url = URL.createObjectURL(blob);
-
-      appendFile(receivedFileName, "Externo", url);
-      const link = document.createElement("a");
     }
+    const blob = new Blob([event.data]);
+    const url = URL.createObjectURL(blob);
+
+    appendFile(receivedFileName, "Externo", url);
+    const link = document.createElement("a");
   };
 }
 
