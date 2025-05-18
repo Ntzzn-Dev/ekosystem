@@ -103,7 +103,7 @@ input[type="text"]:focus {
 }
 
 .download-file {
-  color: var(--cor-principal);
+  color: var(--cor-secundaria);
   display: flex;
 }
 
@@ -140,6 +140,13 @@ input[type="text"]:focus {
 
 #qrcode {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   padding: 15px;
+}
+
+.qrcode-key {
+  margin: 0 0 15px;
+  color: var(--cor-principal);
 }

@@ -59,9 +59,11 @@ document.getElementById("create-btn").onclick = async () => {
     }
 
     const img = document.createElement("img");
+    img.src = url;
+
     const p = document.createElement("p");
     p.textContent = chave;
-    img.src = url;
+    p.classList.add("qrcode-key");
 
     document.getElementById("qrcode").appendChild(p);
     document.getElementById("qrcode").appendChild(img);
@@ -102,7 +104,7 @@ document.getElementById("create-btn").onclick = async () => {
   });
 };
 
-document.getElementById("join-btn").onclick = entrarNoP2P();
+document.getElementById("join-btn").onclick = () => entrarNoP2P();
 
 async function entrarNoP2P() {
   const roomId = roomIdInput.value;
@@ -193,7 +195,7 @@ function appendFile(nome, usuario, link) {
   arq.classList.add("arq");
 
   const nomeP = document.createElement("p");
-  nomeP.classList.add("nome-file");
+  nomeP.classList.add("name-file");
   nomeP.textContent = nome;
   arq.appendChild(nomeP);
 
@@ -206,7 +208,7 @@ function appendFile(nome, usuario, link) {
   section.appendChild(userP);
 
   const a = document.createElement("a");
-  userP.classList.add("download-file");
+  a.classList.add("download-file");
   a.href = link;
   a.download = nome;
 
