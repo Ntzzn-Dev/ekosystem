@@ -164,7 +164,6 @@ function setupDataChannel(channel) {
         const data = JSON.parse(event.data);
         if (data.type === "file-info" && data.name) {
           receivedFileName = data.name;
-          return;
         }
       } catch {}
     }
