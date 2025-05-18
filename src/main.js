@@ -22,7 +22,7 @@ function gerarChave(tamanho = 8) {
   return btoa(binary);
 }
 
-function startScanner() {
+document.getElementById("create-btn").onclick = () => {
   const readerDiv = document.getElementById("reader");
   readerDiv.style.display = "block";
 
@@ -46,7 +46,7 @@ function startScanner() {
     .catch((err) => {
       console.error("Erro ao acessar câmera: ", err);
     });
-}
+};
 
 document.getElementById("create-btn").onclick = async () => {
   const chave = gerarChave();
@@ -61,6 +61,7 @@ document.getElementById("create-btn").onclick = async () => {
     const img = document.createElement("img");
     img.src = url;
     document.getElementById("qrcode").appendChild(img);
+    document.getElementById("qrcode").style.display = "block";
   });
 
   roomIdInput.value = chave;
