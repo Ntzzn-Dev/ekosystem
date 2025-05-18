@@ -53,8 +53,6 @@ document.getElementById("create-btn").onclick = async () => {
       localConnection.addIceCandidate(candidate);
     });
   });
-
-  document.getElementById("chat").style.display = "block";
 };
 
 document.getElementById("join-btn").onclick = async () => {
@@ -90,6 +88,8 @@ document.getElementById("join-btn").onclick = async () => {
       localConnection.addIceCandidate(candidate);
     });
   });
+
+  document.getElementById("chat").style.display = "block";
 };
 
 dataChannel.onopen = () => {
