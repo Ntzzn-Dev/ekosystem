@@ -143,6 +143,8 @@ fileInput.onchange = () => {
     dataChannel.send(reader.result);
   };
   reader.readAsArrayBuffer(file);
+
+  //appendFile(receivedFileName, "Externo", url);
 };
 
 function setupDataChannel(channel) {
@@ -156,6 +158,7 @@ function setupDataChannel(channel) {
   };
 
   channel.onmessage = (event) => {
+    console.log("recebido");
     if (typeof event.data === "string") {
       try {
         const data = JSON.parse(event.data);
@@ -164,17 +167,16 @@ function setupDataChannel(channel) {
           return;
         }
       } catch {}
-    } else {
-      const blob = new Blob([event.data]);
-      const url = URL.createObjectURL(blob);
-
-      appendFile(receivedFileName, receivedFileName, url);
-      const link = document.createElement("a");
     }
+    const blob = new Blob([event.data]);
+    const url = URL.createObjectURL(blob);
+
+    appendFile(receivedFileName, "Externo", url);
   };
 }
 
-function appendFile(nome, extensao, link) {
+function appendFile(nome, usuario, link) {
+  console.log(nome);
   const arq = document.createElement("div");
   arq.classList.add("arq");
 
@@ -187,7 +189,7 @@ function appendFile(nome, extensao, link) {
 
   const extP = document.createElement("p");
   extP.classList.add("ext");
-  extP.textContent = extensao;
+  extP.textContent = usuario;
   section.appendChild(extP);
 
   const a = document.createElement("a");
