@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Ekosystem</title>
-    <script type="module" crossorigin src="/ekosystem/assets/index-Cqth5dKi.js"></script>
+    <script type="module" crossorigin src="/ekosystem/assets/index-CtI4J0nG.js"></script>
     <link rel="stylesheet" crossorigin href="/ekosystem/assets/index-UvwyVB-u.css">
   </head>
   <body>
@@ -28,6 +28,26 @@
           📁 Selecionar arquivo
         </label>
       </section>
+
+      <div id="send-progress-container" style="display: none">
+        <p id="send-progress-text">Enviando: 0%</p>
+        <progress
+          id="send-progress-bar"
+          value="0"
+          max="100"
+          style="width: 100%"
+        ></progress>
+      </div>
+
+      <div id="receive-progress-container" style="display: none">
+        <p id="receive-progress-text">Recebendo: 0%</p>
+        <progress
+          id="receive-progress-bar"
+          value="0"
+          max="100"
+          style="width: 100%"
+        ></progress>
+      </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
