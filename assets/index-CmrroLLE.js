@@ -1650,7 +1650,7 @@ Minimum version required to store current data is: `+E+`.
       <path stroke-linecap="round" stroke-linejoin="round"
             d="M7 10l5 5m0 0l5-5m-5 5V4"/>
     </svg>
-  `,o.appendChild(l)}else{const l=document.createElement("button");l.id="cancel-send-btn",l.innerHTML=`
+  `,o.appendChild(l)}else{const l=document.createElement("button");l.classList.add("cancel-btn"),l.id="cancel-send-btn",l.innerHTML=`
     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" 
      viewBox="0 0 24 24" fill="none" stroke="currentColor" 
      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
