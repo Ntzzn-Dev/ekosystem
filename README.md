@@ -39,3 +39,5 @@ version 1.5.4:
   Botão de cancelamento  
 version 1.5.5 & 1.5.6 & 1.5.7 & 1.5.8 & 1.5.9 & 1.5.10 & 1.5.11 & 1.5.12:  
   Correção do botão  
+version 1.5.13:  
+  Correção do front  

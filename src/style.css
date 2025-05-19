@@ -1,6 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 :root {
   --cor-principal: #e87a64;
   --cor-secundaria: #132541;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.23);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.288);
+  height: 10%;
 }
 
 html,
@@ -8,7 +22,10 @@ body {
   margin: 0;
   background-color: var(--cor-secundaria);
   place-items: center;
-  font-family: "Courier New", Courier, monospace;
+
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 700;
+  font-style: normal;
   font-size: xx-large;
   display: flex;
   flex-direction: column;
@@ -83,10 +100,11 @@ input[type="text"] {
 
 .arqs {
   width: 70dvw;
-  height: 29dvh;
+  max-height: 75dvh;
   border-radius: 24px;
-  background-color: aliceblue;
+  background-color: #f0f8ff;
   padding: 12px;
+  overflow: overlay;
 }
 
 .arq {
@@ -109,10 +127,13 @@ input[type="text"] {
 .user-file {
   font-size: small;
   margin: 0;
+  width: 25%;
+  display: flex;
+  justify-content: center;
 }
 
 .name-file {
-  font-size: medium;
+  font-size: large;
 }
 
 .download-file {
