@@ -29,7 +29,8 @@ h1 {
   transition: background-color 0.3s ease, transform 0.2s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin: 0px;
-  width: 100%;
+  width: auto;
+  display: flex;
 }
 
 button {
@@ -116,10 +117,10 @@ input[type="text"] {
 
 .download-file {
   display: flex;
-  & int {
+  &int {
     color: var(--cor-principal);
   }
-  & ext {
+  &ext {
     color: var(--cor-secundaria);
   }
 }
