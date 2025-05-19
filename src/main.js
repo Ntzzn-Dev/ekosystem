@@ -21,6 +21,9 @@ const receiveProgressText = document.getElementById("receive-progress-text");
 let expectedSize = 0;
 let receivedBytes = 0;
 
+let isSending = true;
+let currentFileReader = null;
+
 let valorDaChave;
 
 function gerarChave(tamanho = 8) {
@@ -86,7 +89,9 @@ document.getElementById("create-btn").onclick = async () => {
   roomIdInput.value = chave;
   roomIdInput.disabled = true;
   const roomRef = ref(database, "rooms/" + roomId);
-  localConnection = new RTCPeerConnection();
+  localConnection = new RTCPeerConnection({
+    iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+  });
   dataChannel = localConnection.createDataChannel("chat");
 
   setupDataChannel(dataChannel);
@@ -123,7 +128,9 @@ async function entrarNoP2P() {
   const roomId = roomIdInput.value;
   const roomRef = ref(database, "rooms/" + roomId);
 
-  localConnection = new RTCPeerConnection();
+  localConnection = new RTCPeerConnection({
+    iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+  });
 
   localConnection.ondatachannel = (event) => {
     dataChannel = event.channel;
@@ -155,6 +162,8 @@ async function entrarNoP2P() {
 }
 
 fileInput.onchange = () => {
+  isSending = true;
+
   const file = fileInput.files[0];
   if (!file) return;
 
@@ -175,6 +184,12 @@ fileInput.onchange = () => {
   const reader = new FileReader();
 
   reader.onload = (event) => {
+    if (!isSending) {
+      sendProgressText.textContent = "Envio cancelado.";
+      sendProgressContainer.style.display = "none";
+      return;
+    }
+
     sendProgressContainer.style.display = "block";
     dataChannel.send(event.target.result);
     offset += chunkSize;
@@ -189,6 +204,7 @@ fileInput.onchange = () => {
       dataChannel.send(JSON.stringify({ type: "file-end" }));
       sendProgressText.textContent = "Envio concluído!";
       setTimeout(() => (sendProgressContainer.style.display = "none"), 2000);
+      currentFileReader.remove();
     }
   };
 
@@ -199,7 +215,7 @@ fileInput.onchange = () => {
 
   readSlice(0);
 
-  appendFile(receivedFileName, "Interno", url);
+  appendFile(receivedFileName, "Upload", url, false);
 };
 
 function setupDataChannel(channel) {
@@ -243,7 +259,7 @@ function setupDataChannel(channel) {
         if (data.type === "file-end") {
           const blob = new Blob(receivedChunks);
           const url = URL.createObjectURL(blob);
-          appendFile(receivedFileName, "Externo", url);
+          appendFile(receivedFileName, "Download", url);
           receivedChunks = [];
 
           receiveProgressText.textContent = "Recebimento concluído!";
@@ -251,6 +267,14 @@ function setupDataChannel(channel) {
             () => (receiveProgressContainer.style.display = "none"),
             2000
           );
+          return;
+        }
+
+        if (data.type === "file-cancel") {
+          receiveProgressText.textContent =
+            "Envio foi cancelado pelo remetente.";
+          receiveProgressContainer.style.display = "none";
+          receivedChunks = [];
           return;
         }
       } catch (err) {
@@ -262,10 +286,11 @@ function setupDataChannel(channel) {
   };
 }
 
-function appendFile(nome, usuario, link) {
+function appendFile(nome, usuario, link, enviado = true) {
   console.log(nome);
   const arq = document.createElement("div");
   arq.classList.add("arq");
+  currentFileReader = arq;
 
   const nomeP = document.createElement("p");
   nomeP.classList.add("name-file");
@@ -280,13 +305,16 @@ function appendFile(nome, usuario, link) {
   userP.textContent = usuario;
   section.appendChild(userP);
 
-  const a = document.createElement("a");
-  a.classList.add("download-file");
-  usuario == "Externo" ? a.classList.add("ext") : a.classList.add("int");
-  a.href = link;
-  a.download = nome;
+  if (enviado) {
+    const a = document.createElement("a");
+    a.classList.add("download-file");
+    usuario.equals("Download")
+      ? a.classList.add("ext")
+      : a.classList.add("int");
+    a.href = link;
+    a.download = nome;
 
-  a.innerHTML = `
+    a.innerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none"
          viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round"
@@ -295,8 +323,29 @@ function appendFile(nome, usuario, link) {
             d="M7 10l5 5m0 0l5-5m-5 5V4"/>
     </svg>
   `;
+    section.appendChild(a);
+  } else {
+    const btn = document.createElement("button");
+    btn.id = "cancel-send-btn";
 
-  section.appendChild(a);
+    btn.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" 
+     viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  `;
+
+    btn.onclick = () => {
+      isSending = false;
+      dataChannel.send(JSON.stringify({ type: "file-cancel" }));
+      sendProgressText.textContent = "Envio cancelado.";
+      document.getElementById("cancel-send-btn").style.display = "none";
+    };
+    section.appendChild(btn);
+  }
+
   arq.appendChild(section);
 
   document.getElementById("arqs").appendChild(arq);

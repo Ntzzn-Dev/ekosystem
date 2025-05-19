@@ -35,3 +35,5 @@ version 1.5.1:
   Adição de uma barra de progresso para arquivos pesados  
 version 1.5.2 & 1.5.3:  
   Correção da barra de progresso  
+version 1.5.4:  
+  Botão de cancelamento  

@@ -181,12 +181,12 @@ progress::-webkit-progress-bar {
 }
 
 progress::-webkit-progress-value {
-  background-color: #4caf50;
+  background-color: var(--cor-principal);
   border-radius: 10px;
   transition: width 0.3s ease;
 }
 
 progress::-moz-progress-bar {
-  background-color: #4caf50;
+  background-color: var(--cor-principal);
   border-radius: 10px;
 }
