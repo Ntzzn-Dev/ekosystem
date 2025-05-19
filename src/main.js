@@ -206,7 +206,8 @@ fileInput.onchange = () => {
       sendProgressText.textContent = "Envio concluído!";
       setTimeout(() => (sendProgressContainer.style.display = "none"), 2000);
       currentFileReader.remove();
-      appendFile(receivedFileName, "Download", url);
+      appendFile(receivedFileName, "Upload", url);
+      currentFileReader = null;
     }
   };
 

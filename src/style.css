@@ -19,6 +19,19 @@ h1 {
   color: var(--cor-principal);
 }
 
+.cancel-btn {
+  background-color: aliceblue;
+  color: var(--cor-secundaria);
+  padding: 0px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 0px;
+  width: 100%;
+}
+
 button {
   background-color: var(--cor-principal);
   color: var(--cor-secundaria);
@@ -82,6 +95,7 @@ input[type="text"] {
   background-color: #d1dae1;
   border-radius: 12px;
   padding: 0px 12px;
+  margin: 0px 0px 5px 0px;
 }
 
 .arq-col {
@@ -189,13 +203,4 @@ progress::-webkit-progress-value {
 progress::-moz-progress-bar {
   background-color: var(--cor-principal);
   border-radius: 10px;
-}
-
-.cancel-btn {
-  color: var(--cor-secundaria);
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 4px 6px #0000001a;
 }
