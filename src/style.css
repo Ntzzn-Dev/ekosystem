@@ -190,3 +190,12 @@ progress::-moz-progress-bar {
   background-color: var(--cor-principal);
   border-radius: 10px;
 }
+
+.cancel-btn {
+  color: var(--cor-secundaria);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px #0000001a;
+}

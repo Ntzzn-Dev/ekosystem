@@ -325,6 +325,7 @@ function appendFile(nome, usuario, link, enviado = true) {
     section.appendChild(a);
   } else {
     const btn = document.createElement("button");
+    btn.classList.add("cancel-btn");
     btn.id = "cancel-send-btn";
 
     btn.innerHTML = `
