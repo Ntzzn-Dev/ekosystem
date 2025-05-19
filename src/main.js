@@ -206,6 +206,7 @@ fileInput.onchange = () => {
       sendProgressText.textContent = "Envio concluído!";
       setTimeout(() => (sendProgressContainer.style.display = "none"), 2000);
       currentFileReader.remove();
+      appendFile(receivedFileName, "Download", url);
     }
   };
 
@@ -341,7 +342,8 @@ function appendFile(nome, usuario, link, enviado = true) {
       isSending = false;
       dataChannel.send(JSON.stringify({ type: "file-cancel" }));
       sendProgressText.textContent = "Envio cancelado.";
-      document.getElementById("cancel-send-btn").style.display = "none";
+      currentFileReader.remove();
+      sendProgressContainer.style.display = "none";
     };
     section.appendChild(btn);
   }

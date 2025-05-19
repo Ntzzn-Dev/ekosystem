@@ -37,5 +37,5 @@ version 1.5.2 & 1.5.3:
   Correção da barra de progresso  
 version 1.5.4:  
   Botão de cancelamento  
-version 1.5.5 & 1.5.6 & 1.5.7:  
+version 1.5.5 & 1.5.6 & 1.5.7 & 1.5.8:  
   Correção do botão  
