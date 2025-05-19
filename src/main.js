@@ -311,7 +311,7 @@ function appendFile(nome, usuario, link, enviado = true) {
   if (enviado) {
     const a = document.createElement("a");
     a.classList.add("download-file");
-    usuario == "Download" ? a.classList.add("ext") : a.classList.add("int");
+    usuario == "Download" ? a.classList.add("down") : a.classList.add("up");
     a.href = link;
     a.download = nome;
 

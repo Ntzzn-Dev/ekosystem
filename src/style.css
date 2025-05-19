@@ -117,10 +117,10 @@ input[type="text"] {
 
 .download-file {
   display: flex;
-  &int {
+  &.up {
     color: var(--cor-principal);
   }
-  &ext {
+  &.down {
     color: var(--cor-secundaria);
   }
 }
