@@ -187,7 +187,7 @@ fileInput.onchange = () => {
     if (!isSending) {
       sendProgressText.textContent = "Envio cancelado.";
       sendProgressContainer.style.display = "none";
-      //currentFileReader.remove();
+      currentFileReader.remove();
       return;
     }
 
@@ -205,6 +205,7 @@ fileInput.onchange = () => {
       dataChannel.send(JSON.stringify({ type: "file-end" }));
       sendProgressText.textContent = "Envio concluído!";
       setTimeout(() => (sendProgressContainer.style.display = "none"), 2000);
+      currentFileReader.remove();
     }
   };
 
