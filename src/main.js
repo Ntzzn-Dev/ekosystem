@@ -187,7 +187,7 @@ fileInput.onchange = () => {
     if (!isSending) {
       sendProgressText.textContent = "Envio cancelado.";
       sendProgressContainer.style.display = "none";
-      currentFileReader.remove();
+      //currentFileReader.remove();
       return;
     }
 
@@ -308,9 +308,7 @@ function appendFile(nome, usuario, link, enviado = true) {
   if (enviado) {
     const a = document.createElement("a");
     a.classList.add("download-file");
-    usuario.equals("Download")
-      ? a.classList.add("ext")
-      : a.classList.add("int");
+    usuario == "Download" ? a.classList.add("ext") : a.classList.add("int");
     a.href = link;
     a.download = nome;
 
