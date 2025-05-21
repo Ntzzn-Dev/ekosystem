@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;700&Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 :root {
   --cor-principal: #e87a64;
-  --cor-secundaria: #132541;
+  --cor-secundaria: #0e141c; /*#132541;*/
 }
 
 ::-webkit-scrollbar {
@@ -20,6 +20,7 @@
 html,
 body {
   margin: 0;
+  height: 100%;
   background-color: var(--cor-secundaria);
   place-items: center;
 
@@ -61,7 +62,7 @@ button {
   transition: background-color 0.3s ease, transform 0.2s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin: 15px 0px;
-  width: 100%;
+  flex: 1;
   &:hover {
     transform: scale(1.05);
   }
@@ -95,6 +96,8 @@ input[type="text"] {
 }
 
 .actions {
+  display: flex;
+  flex-direction: column;
   width: 22dvw;
 }
 
@@ -139,12 +142,12 @@ input[type="text"] {
 
 .download-file {
   display: flex;
-  &.up {
-    color: var(--cor-principal);
-  }
-  &.down {
-    color: var(--cor-secundaria);
-  }
+}
+.up {
+  color: var(--cor-principal);
+}
+.down {
+  color: var(--cor-secundaria);
 }
 
 .custom-file-label {
@@ -244,4 +247,40 @@ progress::-moz-progress-bar {
   height: 100vh;
   z-index: 9999;
   background-color: black;
+}
+
+.msgs {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 70%;
+
+  & textarea {
+    width: 70%;
+    height: calc(100% - 55px);
+    padding: 12px 0px 0px 12px;
+    margin: 15px 0px;
+    font-size: 20px;
+    border: 2px solid;
+    border-color: var(--cor-principal);
+    border-radius: 8px;
+    resize: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s, box-shadow 0.3s;
+    color: var(--cor-principal);
+    background-color: var(--cor-secundaria);
+  }
+
+  & textarea:focus {
+    border-color: var(--cor-principal);
+    outline: none;
+    box-shadow: 0 0 8px var(--cor-principal);
+  }
+}
+
+.text-paste {
+  word-wrap: break-word;
+  word-break: break-word;
+  padding: 0px 20px 0px 0px;
 }

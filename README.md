@@ -43,3 +43,5 @@ version 1.5.13:
   Correção do front  
 version 1.6:  
   Correção no scan do QrCode, correção no tamanho do QrCode gerado, adição de animações, desabilitação do botão ao criar sala  
+version 1.7:  
+  Implementação de transferencia de textos, para o compartilhamento de links por exemplo  

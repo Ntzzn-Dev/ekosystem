@@ -19,9 +19,6 @@ const receiveProgressContainer = document.getElementById(
 );
 const receiveProgressText = document.getElementById("receive-progress-text");
 
-let expectedSize = 0;
-let receivedBytes = 0;
-
 let isSending = true;
 let currentFileReader = null;
 
@@ -60,6 +57,17 @@ document.getElementById("scan-btn").onclick = () => {
     .catch((err) => {
       console.error("Erro ao acessar câmera: ", err);
     });
+};
+
+document.getElementById("msg-btn").onclick = () => {
+  const msg = document.getElementById("msg-text").value;
+  appendText(msg, "Upload");
+  dataChannel.send(
+    JSON.stringify({
+      type: "text-message",
+      content: msg,
+    })
+  );
 };
 
 document.getElementById("create-btn").onclick = async () => {
@@ -242,12 +250,10 @@ function setupDataChannel(channel) {
         if (data.type === "file-info" && data.name) {
           receivedFileName = data.name;
           receivedChunks = [];
-          receivedBytes = 0;
-          receiveProgressContainer.style.display = "block";
+          receiveProgressContainer.style.display = "flex";
           return;
         } else {
           receivedChunks.push(event.data);
-          receivedBytes += event.data.byteLength;
         }
 
         if (data.type === "file-end") {
@@ -261,6 +267,27 @@ function setupDataChannel(channel) {
             () => (receiveProgressContainer.style.display = "none"),
             2000
           );
+          return;
+        }
+
+        if (data.type === "file-message") {
+          const blob = new Blob(receivedChunks);
+          const reader = new FileReader();
+
+          reader.onload = () => {
+            const text = reader.result;
+            appendText(text, "Download");
+
+            receiveProgressText.textContent =
+              "Recebimento da mensagem concluído!";
+            setTimeout(() => {
+              receiveProgressContainer.style.display = "none";
+            }, 2000);
+          };
+
+          reader.readAsText(blob);
+          receivedChunks = [];
+
           return;
         }
 
@@ -339,6 +366,32 @@ function appendFile(nome, usuario, link, enviado = true) {
     };
     section.appendChild(btn);
   }
+
+  arq.appendChild(section);
+
+  document.getElementById("arqs").appendChild(arq);
+}
+
+function appendText(text, usuario) {
+  const arq = document.createElement("div");
+  arq.classList.add("arq");
+  currentFileReader = arq;
+
+  const textP = document.createElement("p");
+  textP.classList.add("name-file");
+  textP.textContent = text;
+  arq.appendChild(textP);
+
+  const section = document.createElement("section");
+  section.classList.add("arq-col");
+
+  const userP = document.createElement("p");
+  userP.classList.add("user-file");
+  userP.textContent = usuario;
+  usuario == "Download"
+    ? userP.classList.add("down")
+    : userP.classList.add("up");
+  section.appendChild(userP);
 
   arq.appendChild(section);
 
