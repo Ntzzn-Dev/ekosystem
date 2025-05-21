@@ -125,13 +125,13 @@ input[type="text"] {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  width: 17%;
+  width: 100px;
+  flex-shrink: 0;
 }
 
 .user-file {
   font-size: small;
   margin: 0;
-  width: 25%;
   display: flex;
   justify-content: center;
 }

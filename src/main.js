@@ -57,6 +57,7 @@ document.getElementById("scan-btn").onclick = () => {
     .catch((err) => {
       console.error("Erro ao acessar câmera: ", err);
     });
+  readerDiv.style.position = "fixed";
 };
 
 document.getElementById("msg-btn").onclick = () => {
