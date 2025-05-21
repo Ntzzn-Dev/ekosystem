@@ -49,3 +49,5 @@ version 1.7.1 & 1.7.2:
   Correção do envio de mensagens  
 version 1.7.3:  
   Adição da cópia do texto enviado  
+version 1.7.4:  
+  Correção do envio de mensagens e cópia do texto  
