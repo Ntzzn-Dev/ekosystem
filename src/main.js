@@ -64,7 +64,7 @@ document.getElementById("msg-btn").onclick = () => {
   appendText(msg, "Upload");
   dataChannel.send(
     JSON.stringify({
-      type: "text-message",
+      type: "file-message",
       content: msg,
     })
   );
