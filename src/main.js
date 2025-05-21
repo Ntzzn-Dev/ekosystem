@@ -271,21 +271,15 @@ function setupDataChannel(channel) {
         }
 
         if (data.type === "file-message") {
-          const blob = new Blob(receivedChunks);
-          const reader = new FileReader();
+          const text = data.content;
+          appendText(text, "Download");
 
-          reader.onload = () => {
-            const text = reader.result;
-            appendText(text, "Download");
+          receiveProgressText.textContent =
+            "Recebimento da mensagem concluído!";
+          setTimeout(() => {
+            receiveProgressContainer.style.display = "none";
+          }, 2000);
 
-            receiveProgressText.textContent =
-              "Recebimento da mensagem concluído!";
-            setTimeout(() => {
-              receiveProgressContainer.style.display = "none";
-            }, 2000);
-          };
-
-          reader.readAsText(blob);
           receivedChunks = [];
 
           return;
