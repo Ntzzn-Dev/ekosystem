@@ -47,3 +47,5 @@ version 1.7:
   Implementação de transferencia de textos, para o compartilhamento de links por exemplo  
 version 1.7.1 & 1.7.2:  
   Correção do envio de mensagens  
+version 1.7.3:  
+  Adição da cópia do texto enviado  
