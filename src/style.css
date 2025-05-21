@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;700&Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 :root {
   --cor-principal: #e87a64;
   --cor-secundaria: #132541;
@@ -101,6 +101,7 @@ input[type="text"] {
 .arqs {
   width: 70dvw;
   max-height: 75dvh;
+  min-height: 25dvh;
   border-radius: 24px;
   background-color: #f0f8ff;
   padding: 12px;
@@ -186,11 +187,13 @@ input[type="text"] {
 .qrcode-key {
   margin: 0 0 15px;
   color: var(--cor-principal);
+  font-family: "Schibsted Grotesk", sans-serif;
+  font-optical-sizing: auto;
 }
 
 .progress-text {
   margin: 0;
-  color: aliceblue;
+  color: #e87a64;
   font-family: monospace;
   place-self: center;
 }
@@ -225,4 +228,20 @@ progress::-webkit-progress-value {
 progress::-moz-progress-bar {
   background-color: var(--cor-principal);
   border-radius: 10px;
+}
+
+#receive-progress-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#reader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background-color: black;
 }

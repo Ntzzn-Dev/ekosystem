@@ -7,15 +7,16 @@ let localConnection;
 let dataChannel;
 let roomIdInput = document.getElementById("room-id");
 let fileInput = document.getElementById("file-input");
+
 const sendProgressContainer = document.getElementById(
   "send-progress-container"
 );
 const sendProgressBar = document.getElementById("send-progress-bar");
 const sendProgressText = document.getElementById("send-progress-text");
+
 const receiveProgressContainer = document.getElementById(
   "receive-progress-container"
 );
-const receiveProgressBar = document.getElementById("receive-progress-bar");
 const receiveProgressText = document.getElementById("receive-progress-text");
 
 let expectedSize = 0;
@@ -46,7 +47,6 @@ document.getElementById("scan-btn").onclick = () => {
       { facingMode: "environment" },
       {
         fps: 10,
-        qrbox: { width: 250, height: 250 },
       },
       (decodedText, decodedResult) => {
         valorDaChave = decodedText;
@@ -68,7 +68,7 @@ document.getElementById("create-btn").onclick = async () => {
   const chave = gerarChave();
   const roomId = chave;
 
-  QRCode.toDataURL(chave, function (err, url) {
+  QRCode.toDataURL(chave, { width: 300 }, function (err, url) {
     if (err) {
       console.error(err);
       return;
@@ -120,6 +120,8 @@ document.getElementById("create-btn").onclick = async () => {
       localConnection.addIceCandidate(candidate);
     });
   });
+
+  document.getElementById("create-btn").disabled = true;
 };
 
 document.getElementById("join-btn").onclick = () => entrarNoP2P();
@@ -246,17 +248,6 @@ function setupDataChannel(channel) {
         } else {
           receivedChunks.push(event.data);
           receivedBytes += event.data.byteLength;
-
-          if (expectedSize > 0 && receivedBytes >= 0) {
-            const progress = (receivedBytes / expectedSize) * 100;
-            if (isFinite(progress)) {
-              const percent = Math.min(progress, 100);
-              receiveProgressBar.value = percent;
-              receiveProgressText.textContent = `Recebendo: ${percent.toFixed(
-                0
-              )}%`;
-            }
-          }
         }
 
         if (data.type === "file-end") {
