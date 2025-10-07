@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { generateKey } from "./utils/generatekey";
+import { generateKeyRoom } from "./utils/generateKeyRoom";
 import QrGenerator from "./components/QrGenerator";
 import QrScanner from "./components/QrScanner";
 import ChatBox from "./components/ChatBox";
@@ -27,7 +27,7 @@ export default function App() {
   }
 
   async function createRoom() {
-    const id = generateKey();
+    const id = generateKeyRoom();
     setRoomId(id);
     await initCaller(id);
   }

@@ -60,4 +60,6 @@ version 1.8 & 1.8.1:
 version 2.0:  
   Remake em React.
 version 2.1:
-  Adição de titulo e ajustes no css.
+  Adição de titulo e ajustes no css.  
+version 2.2:
+  Correção para o Vercel.  
