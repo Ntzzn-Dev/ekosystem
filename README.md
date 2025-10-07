@@ -57,3 +57,7 @@ version 1.7.6 & 1.7.7:
   Migração para o Vercel para esconder .env.  
 version 1.8 & 1.8.1:
   Tentativas de reconexão.  
+version 2.0:  
+  Remake em React.
+version 2.1:
+  Adição de titulo e ajustes no css.
